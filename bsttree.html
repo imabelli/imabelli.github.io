@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 tutorial</title>
+    <script src = "http://d3js.org/d3.v3.min.js"> </script>
+    <script src = "display.js"></script>
+</head>
+<body>
+
+
+        <p>Stuff for working with arrays: data.shift() data.sort(d3.descending()) d3.min(data) d3.max(data) d3.extent(data) gives min and max range of data d3.sum(data) sums up values in data d3.mean(data) d3.median(data) d3.shuffle(data)</p>
+
+
+
+        <script>
+//all code that depends on the data being loaded from json file should be stored within the function brackets in the line below
+           //d3.json("mydata", function (data) { //data in the parameter references the data stored in the file referenced
+
+        var canvas = d3.select("body").append("svg")
+                .attr("width", 2000)
+                .attr("height", 2000)
+                .append("g")
+                    .attr("transform", "translate(50, 50)");
+
+        var tree = d3.layout.tree()
+                ._size([400, 400])
+
+
+
+        d3.json("mydata.json", displayData);
+
+
+/* var canvas = d3.select("body").append("svg")
+                    .attr("width", 500)
+                    .attr("height", 500);
+
+            var diagonal = d3.svg.diagonal()
+                    .source({x: 10, y: 10})
+                    .target({x: 300, y: 300});
+
+            canvas.append("path")
+                    .attr("fill", "none")
+                    .attr("stroke", "black")
+                    .attr("d", diagonal);
+
+
+
+            var data = [10, 50, 80];
+            var r = 300;
+
+            var color = d3.scale.ordinal() // not continuous domain
+                    .range(["red", "blue", "orange"]);
+
+            var canvas = d3.select("body").append("svg")
+                    .attr("width", 1500)
+                    .attr("height", 1500);
+
+            var group = canvas.append("g")
+                    .attr("transform", "translate(300, 300)");
+
+            var arc = d3.svg.arc()
+                    .innerRadius(200)
+                    .outerRadius(r);
+
+            var pie = d3.layout.pie()
+                    .value(function (d) { return d;}); //how this layout is to fetch our data, returns three objects
+
+            var arcs = group.selectAll(".arc")
+                    .data(pie(data))
+                    .enter()
+                    .append("g") //append a group for each data element
+                    .attr("class", "arc"); //every group has a class of arc
+
+            arcs.append("path")
+                    .attr("d", arc)
+                    .attr("fill", function (d) {return color(d.data);});
+
+            arcs.append("text") //append to each group element
+                    .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")";})
+                    .attr("text-anchor", "middle")
+                    .attr("font-_size", "1.5en")
+                    .text(function (d) { return d.data;} );
+
+
+
+
+
+
+            var canvas = d3.select("body").append("svg")
+                        .attr("width", 500)
+                        .attr("height", 500);
+
+                var group = canvas.append("g")
+                        .attr("transform", "translate(100, 100)");
+
+                var r = 100;
+                var p = Math.PI * 2;
+
+                //angles are measured in radians
+                var arc = d3.svg.arc()
+                        .innerRadius(r-20)
+                        .outerRadius(r)
+                        .startAngle(0)
+                        .endAngle(p);
+
+                group.append("path")
+                        .attr("d", arc)
+
+
+
+
+                var canvas = d3.select("body").append("svg")
+                        .attr("width", 500)
+                        .attr("height", 500);
+
+                   var data = [
+                       {x: 10, y: 20},
+                       {x: 40, y: 60},
+                       {x: 50, y: 70}
+                   ];
+
+               var group = canvas.append("g")
+                         .attr("transform", "translate (100, 100)");
+
+                var line = d3.svg.line()
+                        .x(function (d) {return d.x;})
+                        .y(function (d) {return d.y;})
+
+                group.selectAll("path")
+                        .data([data])
+                        .enter()
+                        .append("path")
+                        .attr("d", line)
+                        .attr("fill", "none")
+                        .attr("stroke", "#000")
+                        .attr("stroke-width", "10");
+
+
+                var line = d3.svg.line()
+                        .x(function (d) {return d.x;})
+                        .y(function (d) {return d.y;});
+
+
+
+
+            canvas.selectAll("rect")
+                       .data(data) // referencing the parameter of the callback function
+                       .enter()
+                        .append("rect")
+                        .attr("width", function (d) { return d.age * 10;})
+                        .attr("height", 48)
+                        .attr("y", function (d, i) {return i * 50;})
+                        .attr("fill", "blue");
+
+               canvas.selectAll("text")
+                       .data(data)
+                       .enter()
+                        .append("text")
+                       .attr("fill", "white")
+                       .attr("y", function (d, i) {return i * 50 + 24;})
+                       .text(function (d) {return d.name;})
+           })
+
+
+
+            // DOM elements < data elements (enter returns placeholders for each data element that does not have a DOM element)
+          // DOM elements > data elements (exit contains each DOM element that does not have a corresponding data element )
+          // DOM elements = data elements (update)
+           // var data = [10, 20, 30, 40, 50];
+
+           var canvas = d3.select("body")
+                   .append("svg")
+                   .attr("width", 500)
+                   .attr("height", 500)
+
+           var circle = canvas.append("circle")
+                        .attr("cx", 50)
+                        .attr("cy", 50)
+                        .attr("r", 25);
+
+           circle.transition()
+                   .duration(1500) //specified in miliseconds; how long do you want the transition to be?
+                   //.delay(1000) //how long do you want the browser to wait before starting the transition?
+                   .attr("cx", 150) //where do you want the circle to move to?
+                   .each("end", function () {d3.select(this).attr("fill", "red") }) //  you can also do .each("start", function ()
+           .transition()
+                   .attr("cy", 200)
+                   .transition()
+                   .attr("cx", 50);
+
+           var circle2 = canvas.append("circle")
+                        .attr("cx", 50)
+                        .attr("cy", 200)
+                        .attr("r", 25);
+
+           var circles = canvas.selectAll("circle")
+                        .data(data)
+                        .attr("fill", "green")
+                        .exit() // exit selection selects the DOM elements that don't have corresponding data elements
+                            .attr("fill", "blue");
+            var circles = canvas.selectAll("circle")
+                    .data(data) //data is bound to all existing circles, and there already is one
+                    .attr("fill", "red") //update selection, all data elements already bound to DOM elements
+                    .enter() //no placeholders because all data elements are bound to a DOM element already (when there is one data element and one circle already)
+                        .append("circle")
+                        .attr("cx", 50)
+                        .attr("cy", 50)
+                        .attr("fill", "green")
+                        .attr("r", 25);
+
+*/
+
+           /* var dataArray = [20, 40, 50, 60];
+
+            var width = 500;
+            var height = 500;
+
+            var widthScale = d3.scale.linear()//linear means that the values in the calculated range are the result of a linear function applied to the domain values
+                                .domain([0, 60])
+                                .range([0, 500]);
+
+            var color = d3.scale.linear()
+                            .domain([0, 60])
+                            .range(["red", "blue"])
+
+            var axis = d3.svg.axis()
+                    .ticks(5) // how many ticks/labels on the axis?
+                    .scale(widthScale); //which side is the axis for?
+
+            var canvas = d3.select("body")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .append("g") // group the whole svg thing together
+                    .attr("transform", "translate(20, 0)") // grouped thing is now translated
+
+
+            var bars = canvas.selectAll("rect")
+                    .data(dataArray) //binds elements to the selected all rectangles (there are none right now)
+                    .enter() //returns placeholders for each data element for which there is no correponding DOM element on the page
+                        .append("rect") //append a rectangle for each placeholder
+                        .attr("width", function(d) { return widthScale(d);})
+                        .attr("height", 50)
+                        .attr("fill", function(d) {return color (d) })
+                        .attr("y", function(d, i){ return i * 100;});
+
+            canvas.append("g")
+                    .attr("transform", "translate(0, 400)")
+                    .call(axis);
+*/
+
+                    /*
+                        .attr("width", function(d){return d * 10;}) //d stands for each element you have in the placeholder, can be called whatever u want
+                        .attr("height", 50)
+                        .attr("y", function(d, i){return i*100}); // for each data element within your enter selection first argument is the data; second argument is the index of the data- basically a loop
+                    */
+
+
+
+            /*var circle = canvas.append("circle")
+                    .attr("cx", 250)
+                    .attr("cy", 250)
+                    .attr("r", 50)
+                    .attr("fill", "red");
+            var rect = canvas.append("rect")
+                    .attr("width", 100)
+                    .attr("height", 50);
+            var line = canvas.append("line")
+                    .attr("x1", 0)
+                    .attr("y1", 100)
+                    .attr("x2", 400)
+                    .attr("y2", 400)
+                    .attr("stroke", "green")
+                    .attr("stroke-width", 10);*/
+
+        </script>
+</body>
+</html>

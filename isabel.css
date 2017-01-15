@@ -1,0 +1,9 @@
+label.block {
+    display: block
+}
+h1 {
+    text-align: center
+}
+#errorDiv {
+    color: red
+}

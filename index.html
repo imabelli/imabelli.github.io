@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive BST by Isabel</title>
+    <script src = "https://d3js.org/d3.v3.min.js"> </script>
+    <script src = "bstTree.js"></script>
+    <script src = "display.js"></script>
+    <script src = "helper.js"></script>
+    <script src = "rbTree.js"></script>
+    <link rel="stylesheet" href="isabel.css">
+
+</head>
+<body>
+<h1> Interactive Binary Search Tree </h1>
+<table>
+    <tr>
+        <td><label for = "numberToAdd" >Number to Add: </label></td>
+        <td><input id = "numberToAdd" onkeyup = "addNumberKeyUp(event)" type = "text" size = "20"></td>
+        <td><button onclick = "addNumber()" >Submit</button></td>
+        <td>&nbsp;</td>
+        <!--<td><button onclick = "clearTree()">Clear Tree</button></td>-->
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td> <label for = "numberToDelete" >Number to Delete: </label></td>
+        <td><input id = "numberToDelete" onkeyup = "delNumberKeyUp(event)" type = "text" size = "20"></label></td>
+        <td><button onclick = "deleteNumber()">Submit</button></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>Tree Type: </td><td><input type = "radio" id = "plain" name = "treeType" value = "plain" checked = "checked">Plain<input type = "radio" name = "treeType" value = "redBlack">Red Black</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>Current Tree Size: </td>
+        <td><div id = "treeSize"></div></td>
+    </tr>
+</table>
+<div id = "errorDiv">
+
+</div>
+
+
+
+    <!--
+    <label>Number to Add: <input id = "numberToAdd" onkeyup = "addNumberKeyUp(event)" type = "text" _size = "20"></label>
+   <label>Number to Delete: <input id = "numberToDelete" onkeyup = "delNumberKeyUp(event)" type = "text" _size = "20"></label>
+-->
+
+
+<p> <br> </p>
+
+<script>
+   var bst = new BinarySearchTree();
+   function addNumberKeyUp(event) {
+       var charCode = (typeof event.which === "number") ? event.which : event.keyCode;
+       if(charCode == 13){
+           addNumber();
+       }
+   }
+   function clearTree() {
+       if(document.getElementById('plain').checked)
+       {
+           bst = new BinarySearchTree();
+           displayData(bst.prepareD3Tree());
+       }
+       else {
+           bst = new RBTree();
+           displayData(bst.prepareD3Tree());
+       }
+   }
+   function delNumberKeyUp(event) {
+       var charCode = (typeof event.which === "number") ? event.which : event.keyCode;
+       console.log("c");
+       if(charCode == 13){
+           deleteNumber();
+       }
+
+   }
+   function addNumber() {
+       var x, y;
+       x = document.getElementById("numberToAdd");
+       y = x.value;
+       bst.add(y);
+       displayData(bst.prepareD3Tree());
+        document.getElementById("treeSize").innerHTML = bst.size();
+       document.getElementById('numberToAdd').value=''
+   }
+   function deleteNumber() {
+       var x, y;
+       x = document.getElementById("numberToDelete");
+       y = x.value;
+       bst.remove(y);
+       displayData(bst.prepareD3Tree());
+       document.getElementById("treeSize").innerHTML = bst.size();
+       document.getElementById('numberToDelete').value=''
+   }
+
+   var canvas = d3.select("body").append("svg")
+           .attr("width", 3000)
+           .attr("height", 6000)
+           .append("g")
+           .attr("transform", "translate(50, 50)");
+
+   var tree = d3.layout.tree()
+           .size([800, 400])
+
+   //displayData(bst.prepareD3Tree());
+  // d3.json("mydata.json", displayData);
+   /*BSTs can have no duplicates
+    * in-order traversal: visit left subtree, the node itself, then right subtree
+    * always replacing a node with the rightmost child of the left subtree may lead to an unabalanced tree. you can try
+    * using a self-balancing bst implementation to determine whether u should use the rightmost child of the left subtree or
+    * tbe leftmost of the right subtree*/
+
+</script>
+<p id = "demo"></p>
+</body>
+</html>
